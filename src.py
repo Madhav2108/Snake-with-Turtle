@@ -74,3 +74,69 @@ def move():
     if head.direction == "right":
         x=head.xcor()
         head.setx(x+20)
+
+wn.listen()
+wn.onkeypress(go_up,"Up")
+wn.onkeypress(go_down,"Down")
+wn.onkeypress(go_left,"Left")
+wn.onkeypress(go_right,"Right")
+
+# Main game loop
+while True:
+    wn.update()
+
+  
+    if head.xcor()>290 or head.xcor()<-290 or head.ycor()>290 or head.ycor()<-290:
+        time.sleep(1)
+        head.goto(0,0)
+        head.direction="stop"
+
+        for segment in segments:
+            segment.goto(1000,1000)
+
+        segments.clear()
+
+      
+        score=0
+
+       
+        delay = 0.1
+
+        pen.clear()
+        pen.write("Score: {}  High Score: {}".format(score, high_score), align="center", font=("Courier", 24, "normal"))
+
+
+
+   
+
+    if head.distance(food)<20:
+   
+        x=random.randint(-285,285)
+        y=random.randint(-285,285)
+        food.goto(x,y)
+
+      
+        new_segment=turtle.Turtle()
+        new_segment.speed(0)
+        new_segment.shape("square")
+        new_segment.color("grey")
+        new_segment.penup()
+        segments.append(new_segment)
+
+      
+        delay -= 0.001
+
+       
+        score+=10
+
+        if score > high_score:
+            high_score = score
+
+        pen.clear()
+        pen.write("Score: {}  High Score: {}".format(score,high_score),align="center",font=("Courier", 24, "normal"))
+
+   
+    for index in range(len(segments)-1,0,-1):
+        x=segments[index-1].xcor()
+        y=segments[index-1].ycor()
+        segments[index].goto(x,y)
